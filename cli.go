@@ -197,13 +197,15 @@ func installGlobal(home string) {
 		installInto(homeTemplate, tplPreInstall)
 	}
 
-	gitExec(GIT["SetTemplateDir"] + homeTemplate)
+	args := append([]string(nil), GIT["SetTemplateDir"]...)
+	args = append(args, homeTemplate)
+	gitExec(args...)
 	logger.Infoln(MESSAGES["SetTemplateDir"] + homeTemplate)
 }
 
 // Reset init.tempdir
 func uninstallGlobal() {
-	gitExec(GIT["UnsetTemplateDir"])
+	gitExec(GIT["UnsetTemplateDir"]...)
 }
 
 // Check latest version of git-hooks by github release
@@ -275,7 +277,7 @@ func update(releases []*github.RepositoryRelease) {
 }
 
 func identity() {
-	identity, err := gitExec(GIT["FirstCommit"])
+	identity, err := gitExec(GIT["FirstCommit"]...)
 	if err != nil {
 		logger.Errorln(err)
 		return
@@ -341,9 +343,9 @@ func runConfigHooks(configs map[string]string, contrib string, current string, a
 				// check if repo exist in local file system
 				isExist, _ := exists(filepath.Join(contrib, strippedGitAddress))
 				if !isExist {
-					cmd := fmt.Sprintf("clone %s %s", fullGitAddress, filepath.Join(contrib, strippedGitAddress))
-					logger.Infoln(cmd)
-					_, err := gitExec(cmd)
+					cmdArgs := []string{"clone", fullGitAddress, filepath.Join(contrib, strippedGitAddress)}
+					logger.Infoln("git clone " + fullGitAddress + " " + filepath.Join(contrib, strippedGitAddress))
+					_, err := gitExec(cmdArgs...)
 					if err != nil {
 						logger.Warnln(err)
 						continue
@@ -365,7 +367,7 @@ func runConfigHooks(configs map[string]string, contrib string, current string, a
 						logger.Infoln("Updating contrib hooks")
 						updated = true
 
-						_, err := gitExecWithDir(filepath.Join(contrib, strippedGitAddress), "pull origin master")
+						_, err := gitExecWithDir(filepath.Join(contrib, strippedGitAddress), "pull", "origin", "master")
 						if err == nil {
 							// try again
 							index--
