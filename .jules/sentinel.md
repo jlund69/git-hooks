@@ -1,0 +1,4 @@
+## 2024-05-23 - [Argument Injection in Exec Command]
+**Vulnerability:** The `gitExecWithDir` function originally joined string arguments with spaces and then split them again by spaces (`strings.Split(strings.Join(args, " "), " ")`). This completely undermined the safety of using `exec.Command` in Go, making the code vulnerable to argument injection and fundamentally broken for any file paths containing spaces.
+**Learning:** Joining and splitting arguments before passing them to `exec.Command` defeats the purpose of passing arguments individually to prevent command injection, and creates issues for valid inputs like file paths containing spaces.
+**Prevention:** When calling `exec.Command` in Go, always pass arguments as separate strings (e.g., using a slice or variadic arguments) rather than joining them into a single space-separated string.
