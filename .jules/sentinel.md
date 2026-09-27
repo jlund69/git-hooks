@@ -1,0 +1,6 @@
+## 2024-05-24 - [Command Injection via exec.Command]
+**Vulnerability:** The `gitExecWithDir` function uses `strings.Split(strings.Join(args, " "), " ")` and passes it to `exec.Command`. This could lead to argument injection if any of the passed arguments contained spaces, as they would be split into multiple arguments, and allows shell command injection when constructed insecurely in caller functions. In `cli.go`, `cmd := fmt.Sprintf("clone %s %s", fullGitAddress, filepath.Join(contrib, strippedGitAddress))` constructs a string that is passed to `gitExec(cmd)` which then goes to `gitExecWithDir` and split by spaces, making it vulnerable.
+
+**Learning:** It's important to not combine arguments into strings and then parse them to split into slices for command execution. You should always keep the arguments as slices and supply them correctly to `exec.Command` variadic parameter directly, avoiding `strings.Join` and `strings.Split` with `" "`. Also global variables such as config arrays should be declared as slice `[]string` instead of space-delimited strings to correctly pass them as individual argument tokens avoiding splitting issue.
+
+**Prevention:** Always pass arguments to `gitExec`/`exec.Command` as multiple separate string arguments via string slice or variadic arguments instead of combining them into a single space-separated string.
