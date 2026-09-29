@@ -1,0 +1,4 @@
+## 2024-05-18 - [Command Injection via `strings.Split`]
+**Vulnerability:** The `gitExecWithDir` function parsed arbitrary arguments using `strings.Split(strings.Join(args, " "), " ")` which concatenated arguments into a single string, and naively re-split them by space. If a valid argument had spaces (like `git config user.name "John Doe"`), it would break functionality, but it also opened up the potential for argument/command injection if user-controlled strings bypassed filtering.
+**Learning:** `exec.Command` in Go safely handles properly tokenized arguments automatically without a shell interpreter, provided we don't inadvertently re-parse them.
+**Prevention:** When creating CLI wrappers or calling `exec.Command`, always pass arguments as separate elements of a slice (`args ...string`) explicitly, avoiding manual space-based splitting or single space-separated strings.
