@@ -1,0 +1,4 @@
+## 2024-10-04 - [Fix Command Injection in gitExec]
+**Vulnerability:** The `gitExecWithDir` function previously took a variadic list of strings, joined them with spaces, and re-split them by space before passing them to `exec.Command`. This allowed arbitrary command injections if any input argument contained spaces (e.g. branch names, repository URLs).
+**Learning:** Command arguments should always be passed as distinct slices of strings to `exec.Command`. Avoid intermediate string representations of command execution that are susceptible to poor escaping/injection vulnerabilities.
+**Prevention:** Pass command arguments directly through variadic structures (e.g., `gitExec("clone", url, target_dir)` instead of `gitExec(fmt.Sprintf("clone %s %s", url, target_dir))`), eliminating the need to parse/split command structures in helper functions.
