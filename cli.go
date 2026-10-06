@@ -99,7 +99,9 @@ func list() {
 		logger.Infoln(scope + " hooks")
 
 		config, err := listHooksInDir(scope, dir)
-		if err != nil {
+		if err != nil || len(config) == 0 {
+			logger.Infoln("  (No hooks configured)")
+			logger.Infoln()
 			continue
 		}
 
@@ -118,7 +120,8 @@ func list() {
 		logger.Infoln(scope + " hooks")
 
 		config, err := listHooksInConfig(configPath)
-		if err != nil {
+		if err != nil || len(config) == 0 {
+			logger.Infoln("  (No hooks configured)")
 			continue
 		}
 
