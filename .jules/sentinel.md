@@ -1,0 +1,4 @@
+## 2024-05-16 - Prevent Argument Injection via exec.Command
+**Vulnerability:** Argument Injection vulnerability in `gitExecWithDir`
+**Learning:** `gitExecWithDir` joins arguments into a single string and then splits them by space: `args = strings.Split(strings.Join(args, " "), " ")`. This creates an argument injection vulnerability and allows commands to be bypassed, particularly if file paths or arguments with spaces are passed. Even more importantly, when calling `exec.Command` in Go, arguments should be passed as separate string elements in a slice rather than being parsed from a single string.
+**Prevention:** Remove the `strings.Split(strings.Join(args, " "), " ")` logic. When invoking `gitExec` or `exec.Command`, always provide each argument as a separate string element within the `args` variadic slice, like `gitExec("config", "--get", "hooks.global")` instead of `gitExec("config --get hooks.global")`.
