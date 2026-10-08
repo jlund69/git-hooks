@@ -1,0 +1,7 @@
+## 2024-05-18 - Argument Injection in `os/exec` commands
+
+**Vulnerability:** Command argument injection was possible because arguments to `os/exec.Command` via `gitExecWithDir` were joined into a single string by space, and then split by space: `args = strings.Split(strings.Join(args, " "), " ")`. If an argument contained spaces (e.g. paths), it would be treated as multiple arguments, and potentially introduce command/argument injection depending on the input.
+
+**Learning:** When passing arguments to executable processes through wrappers (like the `gitExec` / `gitExecWithDir` utility functions in this app), joining and splitting by a literal space destroys boundary integrity of the passed elements, especially when handling things like dynamically generated directory names or external user inputs. The global `GIT` map was previously storing full command strings (like `"config --global --get init.templatedir"`) to be passed to this vulnerable executor function.
+
+**Prevention:** Always maintain command arguments as explicit slice elements (`[]string`) natively, passing them intact down to `exec.Command` using the spread operator (`...`). A dictionary of command structures should also store these as string slices instead of concatenating strings. Use `.Dir` on `exec.Cmd` to define the working directory of the process. For this specific repo, `GIT` map values were migrated from `map[string]string` to `map[string][]string`, and all `gitExec` invocations were updated to separate their arguments.
