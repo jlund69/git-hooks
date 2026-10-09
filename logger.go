@@ -12,32 +12,46 @@ type Logger struct {
 	warns  []interface{}
 }
 
+func formatMsg(colorTag string, msgs ...interface{}) []interface{} {
+	if len(msgs) > 0 {
+		if s, ok := msgs[0].(string); ok {
+			msgs[0] = colorTag + s
+		} else {
+			msgs = append([]interface{}{colorTag}, msgs...)
+		}
+	} else {
+		msgs = []interface{}{colorTag}
+	}
+	return msgs
+}
+
 func (logger *Logger) Error(msgs ...interface{}) {
 	logger.Errors(1, msgs...)
 }
 
 func (logger *Logger) Errors(status int, msgs ...interface{}) {
+	msgs = formatMsg("@r", msgs...)
 	if isTestEnv() {
 		logger.errors = append(logger.errors, msgs...)
 		return
 	}
 
-	msgs = append([]interface{}{"@r"}, msgs...)
 	color.Print(msgs...)
 	os.Exit(status)
 }
 
 func (logger *Logger) Warn(msgs ...interface{}) {
+	msgs = formatMsg("@y", msgs...)
 	if isTestEnv() {
 		logger.warns = append(logger.warns, msgs...)
 		return
 	}
 
-	msgs = append([]interface{}{"@y"}, msgs...)
 	color.Print(msgs...)
 }
 
 func (logger *Logger) Info(msgs ...interface{}) {
+	msgs = formatMsg("@c", msgs...)
 	if isTestEnv() {
 		logger.infos = append(logger.infos, msgs...)
 		return
