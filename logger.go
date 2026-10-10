@@ -17,27 +17,28 @@ func (logger *Logger) Error(msgs ...interface{}) {
 }
 
 func (logger *Logger) Errors(status int, msgs ...interface{}) {
+	msgs = prependColorTag("@r", msgs...)
 	if isTestEnv() {
 		logger.errors = append(logger.errors, msgs...)
 		return
 	}
 
-	msgs = append([]interface{}{"@r"}, msgs...)
 	color.Print(msgs...)
 	os.Exit(status)
 }
 
 func (logger *Logger) Warn(msgs ...interface{}) {
+	msgs = prependColorTag("@y", msgs...)
 	if isTestEnv() {
 		logger.warns = append(logger.warns, msgs...)
 		return
 	}
 
-	msgs = append([]interface{}{"@y"}, msgs...)
 	color.Print(msgs...)
 }
 
 func (logger *Logger) Info(msgs ...interface{}) {
+	msgs = prependColorTag("@c", msgs...)
 	if isTestEnv() {
 		logger.infos = append(logger.infos, msgs...)
 		return
@@ -73,6 +74,16 @@ func (logger *Logger) flush() {
 	fmt.Println(logger.warns)
 	fmt.Println(logger.errors)
 	logger.clear()
+}
+
+func prependColorTag(tag string, msgs ...interface{}) []interface{} {
+	if len(msgs) > 0 {
+		if str, ok := msgs[0].(string); ok {
+			msgs[0] = tag + str
+			return msgs
+		}
+	}
+	return append([]interface{}{tag}, msgs...)
 }
 
 var logger = new(Logger)
