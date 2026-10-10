@@ -57,14 +57,14 @@ func TestList(t *testing.T) {
 	// Should outside of this repo
 	createDirectory(t, os.TempDir(), func(tempdir string) {
 		list()
-		assert.Equal(t, MESSAGES["NotGitRepo"], logger.infos[0])
+		assert.Equal(t, "@c" + MESSAGES["NotGitRepo"], logger.infos[0])
 		logger.clear()
 	})
 
 	// git hooks not installed
 	createGitRepo(t, func(tempdir string) {
 		list()
-		assert.Equal(t, MESSAGES["NotInstalled"], logger.infos[0])
+		assert.Equal(t, "@c" + MESSAGES["NotInstalled"], logger.infos[0])
 		logger.clear()
 	})
 
@@ -75,7 +75,7 @@ func TestList(t *testing.T) {
 		assert.Nil(t, err)
 
 		list()
-		assert.Equal(t, MESSAGES["Installed"], logger.infos[0])
+		assert.Equal(t, "@c" + MESSAGES["Installed"], logger.infos[0])
 		logger.clear()
 	})
 }
@@ -85,7 +85,7 @@ func TestInstall(t *testing.T) {
 	// not inside git repo
 	createDirectory(t, os.TempDir(), func(tempdir string) {
 		install(true)
-		assert.Equal(t, MESSAGES["NotGitRepo"], logger.errors[0])
+		assert.Equal(t, "@r"+MESSAGES["NotGitRepo"], logger.errors[0])
 		logger.clear()
 	})
 
@@ -100,7 +100,7 @@ func TestInstall(t *testing.T) {
 	createGitRepo(t, func(tempdir string) {
 		install(true)
 		install(true)
-		assert.Equal(t, MESSAGES["ExistHooks"], logger.errors[0])
+		assert.Equal(t, "@r"+MESSAGES["ExistHooks"], logger.errors[0])
 		logger.clear()
 	})
 
@@ -110,14 +110,14 @@ func TestInstall(t *testing.T) {
 		logger.clear()
 
 		uninstall()
-		assert.Equal(t, MESSAGES["Restore"], logger.infos[0])
+		assert.Equal(t, "@c"+MESSAGES["Restore"], logger.infos[0])
 		logger.clear()
 	})
 
 	// not installed
 	createGitRepo(t, func(tempdir string) {
 		uninstall()
-		assert.Equal(t, MESSAGES["NotExistHooks"], logger.errors[0])
+		assert.Equal(t, "@r"+MESSAGES["NotExistHooks"], logger.errors[0])
 		logger.clear()
 	})
 }
@@ -133,7 +133,7 @@ func TestInstallGlobal(t *testing.T) {
 		newTemplatedir, err := gitExec(GIT["GetTemplateDir"])
 		assert.Nil(t, err)
 		assert.Equal(t, DIRS["HomeTemplate"], newTemplatedir)
-		assert.True(t, strings.HasPrefix(logger.infos[len(logger.infos)-2].(string), MESSAGES["SetTemplateDir"]))
+		assert.True(t, strings.HasPrefix(logger.infos[len(logger.infos)-2].(string), "@c"+MESSAGES["SetTemplateDir"]))
 		logger.clear()
 	})
 
@@ -148,7 +148,7 @@ func TestInstallGlobal(t *testing.T) {
 		newTemplatedir, err := gitExec(GIT["GetTemplateDir"])
 		assert.Nil(t, err)
 		assert.Equal(t, DIRS["HomeTemplate"], newTemplatedir)
-		assert.True(t, strings.HasPrefix(logger.infos[0].(string), MESSAGES["SetTemplateDir"]))
+		assert.True(t, strings.HasPrefix(logger.infos[0].(string), "@c"+MESSAGES["SetTemplateDir"]))
 		logger.clear()
 	})
 
@@ -171,7 +171,7 @@ func TestUninstallGlobal(t *testing.T) {
 		newTemplatedir, err := gitExec(GIT["GetTemplateDir"])
 		assert.Nil(t, err)
 		assert.Equal(t, DIRS["HomeTemplate"], newTemplatedir)
-		assert.True(t, strings.HasPrefix(logger.infos[len(logger.infos)-2].(string), MESSAGES["SetTemplateDir"]))
+		assert.True(t, strings.HasPrefix(logger.infos[len(logger.infos)-2].(string), "@c"+MESSAGES["SetTemplateDir"]))
 		logger.clear()
 
 		uninstallGlobal()
@@ -224,19 +224,19 @@ func TestUpdate(t *testing.T) {
 	// latest version
 	VERSION = "v1.1.0"
 	update(releases)
-	assert.Equal(t, MESSAGES["UpdateToDate"], logger.infos[2])
+	assert.Equal(t, "@c"+MESSAGES["UpdateToDate"], logger.infos[2])
 	logger.clear()
 
 	// backward imcompatible
 	VERSION = "v0.9.0"
 	update(releases)
-	assert.Equal(t, MESSAGES["Incompatible"], logger.infos[2])
+	assert.Equal(t, "@c"+MESSAGES["Incompatible"], logger.infos[2])
 	logger.clear()
 
 	// update version
 	VERSION = "v1.0.0"
 	update(releases)
-	assert.True(t, strings.HasPrefix(logger.infos[len(logger.infos)-2].(string), "Successfully"))
+	assert.True(t, strings.HasPrefix(logger.infos[len(logger.infos)-2].(string), "@cSuccessfully"))
 	logger.clear()
 
 	VERSION = REAL_VERSION
