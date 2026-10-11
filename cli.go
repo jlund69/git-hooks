@@ -90,9 +90,9 @@ func list() {
 	if err != nil {
 		logger.Infoln(MESSAGES["NotGitRepo"])
 	} else if installed {
-		logger.Infoln(MESSAGES["Installed"])
+		logger.Infoln("@g✔ " + MESSAGES["Installed"])
 	} else {
-		logger.Infoln(MESSAGES["NotInstalled"])
+		logger.Infoln("@y✗ " + MESSAGES["NotInstalled"])
 	}
 
 	for scope, dir := range hookDirs() {

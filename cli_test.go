@@ -64,7 +64,7 @@ func TestList(t *testing.T) {
 	// git hooks not installed
 	createGitRepo(t, func(tempdir string) {
 		list()
-		assert.Equal(t, MESSAGES["NotInstalled"], logger.infos[0])
+		assert.Equal(t, "@y✗ " + MESSAGES["NotInstalled"], logger.infos[0])
 		logger.clear()
 	})
 
@@ -75,7 +75,7 @@ func TestList(t *testing.T) {
 		assert.Nil(t, err)
 
 		list()
-		assert.Equal(t, MESSAGES["Installed"], logger.infos[0])
+		assert.Equal(t, "@g✔ " + MESSAGES["Installed"], logger.infos[0])
 		logger.clear()
 	})
 }
