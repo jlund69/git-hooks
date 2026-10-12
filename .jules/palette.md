@@ -1,0 +1,3 @@
+## 2024-10-24 - CLI Output Color Formatting
+**Learning:** When using custom loggers like `github.com/wsxiaoys/terminal/color` in CLI apps, prepend color tags (e.g., `@c` for cyan) directly to the output generation logic instead of modifying underlying configuration maps (like `MESSAGES`). This maintains separation of concerns and avoids unintended side effects elsewhere in the application. Note that since the logger stores exact arguments in test mode, tests asserting on log outputs must also match the formatted strings exactly.
+**Action:** Apply color tags to log outputs directly rather than modifying the data sources, and always verify and update corresponding test assertions that expect exact string matches.
