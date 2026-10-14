@@ -1,0 +1,4 @@
+## 2024-05-18 - Fix Command Injection Vulnerability in gitExec
+**Vulnerability:** Command injection vulnerability in `gitExecWithDir` function where variadic arguments were joined into a single string with spaces and then split again using `strings.Split(strings.Join(args, " "), " ")` before being passed to `exec.Command`. This allowed arguments with spaces (like a user-controlled path) to be split into separate arguments, potentially allowing attackers to inject malicious flags or commands.
+**Learning:** Joining and then re-splitting variadic arguments is unsafe and circumvents the protection provided by `exec.Command` which correctly handles spaces in individual argument elements.
+**Prevention:** Always pass arguments to `exec.Command` as separate strings in a slice, rather than joining them into a single string and attempting to parse them.
