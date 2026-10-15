@@ -1,0 +1,3 @@
+## 2024-03-24 - Enhance CLI Scanability with Color Output
+**Learning:** Using color in CLI applications significantly improves user experience by enhancing scannability and visual hierarchy. Users can quickly identify success/error states and differentiate between headers and items in lists.
+**Action:** When working on CLI outputs, consider using a coloring library (like `github.com/wsxiaoys/terminal/color`) to prepend color tags to messages, making it easier for users to parse information at a glance. Always ensure tests account for these color tags if the logger stores exact formatted strings.
