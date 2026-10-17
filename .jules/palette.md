@@ -1,0 +1,5 @@
+## 2024-02-29 - CLI Color Feedback
+
+**Learning:** Adding visual cues (like terminal colors) to status messages provides immediate, intuitive feedback to users, making the CLI much more pleasant to use. However, doing so requires prepending these color tags at the point of presentation (in the output generation code) rather than changing the underlying configuration maps to maintain the separation of concerns.
+
+**Action:** When adding color tags using custom logger libraries (e.g., `github.com/wsxiaoys/terminal/color`), ensure that color tags (e.g. `@g`, `@y`) are prepended to the final message strings where they are logged rather than altering the core messaging constants or configuration files. Additionally, test environments directly intercept these arguments; always ensure that test assertions are updated to expect these prepended color tags.
