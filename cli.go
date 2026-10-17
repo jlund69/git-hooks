@@ -88,11 +88,11 @@ func main() {
 func list() {
 	installed, err := isInstalled()
 	if err != nil {
-		logger.Infoln(MESSAGES["NotGitRepo"])
+		logger.Infoln("@r" + MESSAGES["NotGitRepo"])
 	} else if installed {
-		logger.Infoln(MESSAGES["Installed"])
+		logger.Infoln("@g" + MESSAGES["Installed"])
 	} else {
-		logger.Infoln(MESSAGES["NotInstalled"])
+		logger.Infoln("@y" + MESSAGES["NotInstalled"])
 	}
 
 	for scope, dir := range hookDirs() {
@@ -175,7 +175,7 @@ func install(isInstall bool) {
 		}
 		os.RemoveAll(filepath.Join(dirPath, "hooks"))
 		os.Rename(filepath.Join(dirPath, "hooks.old"), filepath.Join(dirPath, "hooks"))
-		logger.Infoln(MESSAGES["Restore"])
+		logger.Infoln("@g" + MESSAGES["Restore"])
 	}
 }
 
@@ -198,7 +198,7 @@ func installGlobal(home string) {
 	}
 
 	gitExec(GIT["SetTemplateDir"] + homeTemplate)
-	logger.Infoln(MESSAGES["SetTemplateDir"] + homeTemplate)
+	logger.Infoln("@g" + MESSAGES["SetTemplateDir"] + homeTemplate)
 }
 
 // Reset init.tempdir
@@ -227,13 +227,13 @@ func update(releases []*github.RepositoryRelease) {
 
 	// latest version
 	if current.GTE(*latest) {
-		logger.Infoln(MESSAGES["UpdateToDate"])
+		logger.Infoln("@g" + MESSAGES["UpdateToDate"])
 		return
 	}
 
 	// backward incompatible
 	if latest.Major != current.Major {
-		logger.Infoln(MESSAGES["Incompatible"])
+		logger.Infoln("@y" + MESSAGES["Incompatible"])
 		return
 	}
 
@@ -269,7 +269,7 @@ func update(releases []*github.RepositoryRelease) {
 				return
 			}
 		}
-		logger.Infoln("Successfully update " + NAME + " to " + version)
+		logger.Infoln("@g" + "Successfully update " + NAME + " to " + version)
 		break
 	}
 }
