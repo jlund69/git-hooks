@@ -1,0 +1,3 @@
+## 2024-10-19 - Visual Hierarchy in CLI Status Messages
+**Learning:** In command-line interfaces, simple text output for different statuses (e.g., installed vs. not installed vs. not a git repo) lacks visual distinction, requiring users to read carefully to understand the current state. Adding color coding (green for success/installed, yellow for warning/not installed) significantly improves scannability and UX without cluttering the output.
+**Action:** When working on CLI tools, always use color tags in logger outputs (e.g., `@g` for green, `@y` for yellow) for status messages to create immediate visual hierarchy and feedback for the user. Ensure these color tags are accounted for in test assertions.
