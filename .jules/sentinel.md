@@ -1,0 +1,4 @@
+## 2024-05-18 - [CRITICAL] Command Injection via gitExecWithDir
+**Vulnerability:** The function `gitExecWithDir` joins its variadic `args` into a space-separated string and then splits it back into a slice to pass to `exec.Command`. This behavior allows command/argument injection if user-controlled strings contain spaces, essentially splitting arguments unexpectedly. For instance, the codebase often combines constants and dynamic inputs directly into `gitExec`, leading to unsafe executions.
+**Learning:** Joining variadic strings and re-splitting them via spaces breaks argument boundaries and can easily lead to argument/command injection vulnerabilities, especially when executing shell/external commands.
+**Prevention:** Pass arguments to `exec.Command` directly as a slice of separate strings to preserve proper argument boundaries and avoid intermediate space-delimited string generation.
