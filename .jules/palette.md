@@ -1,0 +1,3 @@
+## 2024-10-20 - Adding semantic colors to CLI status outputs
+**Learning:** Adding colors to CLI status outputs (like error, warning, success messages) vastly improves the developer UX by making it easier to scan for information quickly. However, one should modify the string in output generation (e.g. `logger.Infoln("@g" + msg)`) rather than mutating base config maps to separate data from presentation.
+**Action:** Always prepend terminal color tags to status messages where they are logged rather than embedding them directly in global string maps to ensure data structures remain clean and reusable across different contexts.
