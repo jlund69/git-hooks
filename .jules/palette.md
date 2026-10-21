@@ -1,0 +1,3 @@
+## 2026-10-21 - [Color Tags in Tests]
+**Learning:** The custom logger using `github.com/wsxiaoys/terminal/color` stores literal format strings including color tags (like `@g`, `@y`) in test mode buffers, meaning tests asserting on this output must include the tags in expectations.
+**Action:** When adding color formatting for UX improvements via this logger, always update corresponding assertions in test files to match the prepended tag strings exact.
