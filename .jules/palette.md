@@ -1,0 +1,3 @@
+## 2024-10-22 - CLI Visual Hierarchy using Colors
+**Learning:** Terminal outputs with heavily nested lists (like `git hooks list`) can be difficult for users to cognitively parse. Adding distinct colors to different hierarchical levels (headers, sub-headers, items) significantly reduces visual clutter and improves scanning speed.
+**Action:** When implementing CLI list commands, utilize structural coloring (e.g., using `github.com/wsxiaoys/terminal/color` tags like `@c`, `@g`) to differentiate hierarchy levels natively. Always remember to update corresponding tests to assert the fully tagged strings.
