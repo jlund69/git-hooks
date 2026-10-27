@@ -1,0 +1,4 @@
+## 2024-05-18 - [Fix Command and Argument Injection in gitExec]
+**Vulnerability:** Command and argument injection risk in `gitExecWithDir` where space-separated arguments were being split using `strings.Split(strings.Join(args, " "), " ")`. If an argument (like a file path) contained spaces, it would be split into multiple unintended arguments, potentially allowing execution of arbitrary commands or unintended git behavior.
+**Learning:** `os/exec` relies on the separation of the command from its arguments, and manually joining and splitting arguments breaks this guarantee.
+**Prevention:** Avoid manipulating slices of arguments with string joining and splitting. Pass arguments as individual strings natively supported by `os/exec.Command`. Update the global string maps to slices of strings for complex commands.
