@@ -1,0 +1,3 @@
+## 2024-10-28 - Colorizing CLI Output
+**Learning:** Adding colors to CLI output can significantly improve its readability and user experience. By utilizing `github.com/wsxiaoys/terminal/color`, which parses specific string tags (`@r`, `@g`, `@y`, `@c`) into ANSI color codes natively, we can add context without relying heavily on boilerplate formatting.
+**Action:** When working with Golang CLI tools that use this logger, ensure color tags are prefixed directly in the string passed to the output functions. Ensure tests expecting exact string outputs (like `cli_test.go`) are updated to reflect the presence of these format tags.
