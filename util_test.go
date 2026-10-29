@@ -9,6 +9,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -25,7 +26,7 @@ func TestGetDirPath(t *testing.T) {
 }
 
 func TestGitExec(t *testing.T) {
-	identity, err := gitExec(GIT["FirstCommit"])
+	identity, err := gitExec(strings.Split(GIT["FirstCommit"], " ")...)
 	assert.Nil(t, err)
 	assert.Equal(t, "553ec650fd4f90003774e2ff00b10bc9aa9ec802", identity)
 }
@@ -34,7 +35,7 @@ func TestGitExecWithDir(t *testing.T) {
 	wd, err := os.Getwd()
 	assert.Nil(t, err)
 
-	identity, err := gitExecWithDir(wd, GIT["FirstCommit"])
+	identity, err := gitExecWithDir(wd, strings.Split(GIT["FirstCommit"], " ")...)
 	assert.Nil(t, err)
 	assert.Equal(t, "553ec650fd4f90003774e2ff00b10bc9aa9ec802", identity)
 }

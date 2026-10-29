@@ -197,13 +197,14 @@ func installGlobal(home string) {
 		installInto(homeTemplate, tplPreInstall)
 	}
 
-	gitExec(GIT["SetTemplateDir"] + homeTemplate)
+	args := append(strings.Split(strings.TrimSpace(GIT["SetTemplateDir"]), " "), homeTemplate)
+	gitExec(args...)
 	logger.Infoln(MESSAGES["SetTemplateDir"] + homeTemplate)
 }
 
 // Reset init.tempdir
 func uninstallGlobal() {
-	gitExec(GIT["UnsetTemplateDir"])
+	gitExec(strings.Split(GIT["UnsetTemplateDir"], " ")...)
 }
 
 // Check latest version of git-hooks by github release
@@ -275,7 +276,7 @@ func update(releases []*github.RepositoryRelease) {
 }
 
 func identity() {
-	identity, err := gitExec(GIT["FirstCommit"])
+	identity, err := gitExec(strings.Split(GIT["FirstCommit"], " ")...)
 	if err != nil {
 		logger.Errorln(err)
 		return
@@ -343,7 +344,7 @@ func runConfigHooks(configs map[string]string, contrib string, current string, a
 				if !isExist {
 					cmd := fmt.Sprintf("clone %s %s", fullGitAddress, filepath.Join(contrib, strippedGitAddress))
 					logger.Infoln(cmd)
-					_, err := gitExec(cmd)
+					_, err := gitExec("clone", fullGitAddress, filepath.Join(contrib, strippedGitAddress))
 					if err != nil {
 						logger.Warnln(err)
 						continue
@@ -365,7 +366,7 @@ func runConfigHooks(configs map[string]string, contrib string, current string, a
 						logger.Infoln("Updating contrib hooks")
 						updated = true
 
-						_, err := gitExecWithDir(filepath.Join(contrib, strippedGitAddress), "pull origin master")
+						_, err := gitExecWithDir(filepath.Join(contrib, strippedGitAddress), "pull", "origin", "master")
 						if err == nil {
 							// try again
 							index--
