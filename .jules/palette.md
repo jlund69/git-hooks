@@ -1,0 +1,3 @@
+## 2026-10-29 - [Improve Status Messaging in CLI with Colors]
+**Learning:** Terminal CLI users benefit significantly from visual cues like colors (e.g., green for success, red for error, yellow for warning or missing installation). This provides immediate status recognition without reading text.
+**Action:** Always consider leveraging simple text colorization tags for key status states in CLI applications to enhance legibility and UX, avoiding complex UX changes or external dependencies.
