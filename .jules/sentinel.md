@@ -1,0 +1,4 @@
+## 2025-02-14 - Fix argument injection vulnerability in git command execution
+**Vulnerability:** Argument injection vulnerability due to unsafe joining and splitting of command arguments by space in `gitExecWithDir` function.
+**Learning:** Joining variadic string arguments by space and then splitting them again before passing them to `exec.Command` negates the protections provided by passing arguments separately. This can cause arguments containing spaces to be improperly parsed, or worse, allow arbitrary arguments or flags to be injected if part of the command input is user-controllable.
+**Prevention:** Always pass arguments as discrete strings to `exec.Command` and avoid unnecessary string manipulations like joining and splitting by space on the argument list. When utilizing globally mapped commands, ensure they are stored as slices of strings rather than flat strings.
