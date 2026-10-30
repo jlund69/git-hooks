@@ -1,0 +1,3 @@
+## 2023-10-27 - Inline Terminal Color Parser in Custom Loggers
+**Learning:** This CLI app's custom logger uses `github.com/wsxiaoys/terminal/color`, which parses string tags (e.g., `@y`, `@g`, `@c`) into ANSI color codes natively. By passing these tags inline within the string argument, we can enhance visual hierarchy and status readability for users without refactoring underlying configuration maps or complex UI rendering logic.
+**Action:** When working with similar CLI loggers that rely on text parsing for style, prepend simple color tags to strings in output logic rather than modifying shared constant string maps, keeping separation of concerns between data/messages and visual output.
