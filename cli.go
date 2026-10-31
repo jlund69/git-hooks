@@ -96,7 +96,7 @@ func list() {
 	}
 
 	for scope, dir := range hookDirs() {
-		logger.Infoln(scope + " hooks")
+		logger.Infoln("@c" + scope + " hooks")
 
 		config, err := listHooksInDir(scope, dir)
 		if err != nil {
@@ -104,18 +104,18 @@ func list() {
 		}
 
 		for trigger, hooks := range config {
-			logger.Infoln("  " + trigger)
+			logger.Infoln("@m  " + trigger)
 
 			for _, hook := range hooks {
-				logger.Infoln("    - " + hook)
+				logger.Infoln("@g    - " + hook)
 			}
 		}
 		logger.Infoln()
 	}
 
-	logger.Infoln("Contrib hooks")
+	logger.Infoln("@cContrib hooks")
 	for scope, configPath := range hookConfigs() {
-		logger.Infoln(scope + " hooks")
+		logger.Infoln("@c" + scope + " hooks")
 
 		config, err := listHooksInConfig(configPath)
 		if err != nil {
@@ -123,13 +123,13 @@ func list() {
 		}
 
 		for trigger, repo := range config {
-			logger.Infoln("  " + trigger)
+			logger.Infoln("@m  " + trigger)
 
 			for repoName, hooks := range repo {
-				logger.Infoln("  " + repoName)
+				logger.Infoln("@y  " + repoName)
 
 				for _, hook := range hooks {
-					logger.Infoln("    - " + hook)
+					logger.Infoln("@g    - " + hook)
 				}
 			}
 		}
