@@ -89,13 +89,14 @@ func hookConfigs() map[string]string {
 // Treate directory as a hook if it contain an executable file with the name of `trigger`
 // Example:
 // githooks
-//     ├── _pre-commit
-//     │   ├── test
-//     │   └── whitespace
-//     └── pre-commit
-//         ├── dir
-//         │   └── pre-commit
-//         └── whitespace
+//
+//	├── _pre-commit
+//	│   ├── test
+//	│   └── whitespace
+//	└── pre-commit
+//	    ├── dir
+//	    │   └── pre-commit
+//	    └── whitespace
 func listHooksInDir(scope, dirname string) (hooks map[string][]string, err error) {
 	hooks = make(map[string][]string)
 
