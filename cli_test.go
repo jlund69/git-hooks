@@ -52,7 +52,7 @@ func createGitRepo(t *testing.T, context func(tempdir string)) {
 }
 
 func TestList(t *testing.T) {
-	gitExec(GIT["RemoveTemplateDir"])
+	gitExec("config", "--global", "--remove-section", "init")
 	// not inside git repo
 	// Should outside of this repo
 	createDirectory(t, os.TempDir(), func(tempdir string) {
@@ -124,13 +124,13 @@ func TestInstall(t *testing.T) {
 
 func TestInstallGlobal(t *testing.T) {
 	// backup current configuration file
-	templatedir, err := gitExec(GIT["GetTemplateDir"])
+	templatedir, err := gitExec("config", "--global", "--get", "init.templatedir")
 
 	createDirectory(t, os.TempDir(), func(tempdir string) {
 		DIRS["HomeTemplate"] = filepath.Join(tempdir, "home")
 
 		installGlobal(tempdir)
-		newTemplatedir, err := gitExec(GIT["GetTemplateDir"])
+		newTemplatedir, err := gitExec("config", "--global", "--get", "init.templatedir")
 		assert.Nil(t, err)
 		assert.Equal(t, DIRS["HomeTemplate"], newTemplatedir)
 		assert.True(t, strings.HasPrefix(logger.infos[len(logger.infos)-2].(string), MESSAGES["SetTemplateDir"]))
@@ -145,7 +145,7 @@ func TestInstallGlobal(t *testing.T) {
 		logger.clear()
 
 		installGlobal(tempdir)
-		newTemplatedir, err := gitExec(GIT["GetTemplateDir"])
+		newTemplatedir, err := gitExec("config", "--global", "--get", "init.templatedir")
 		assert.Nil(t, err)
 		assert.Equal(t, DIRS["HomeTemplate"], newTemplatedir)
 		assert.True(t, strings.HasPrefix(logger.infos[0].(string), MESSAGES["SetTemplateDir"]))
@@ -154,44 +154,44 @@ func TestInstallGlobal(t *testing.T) {
 
 	// restore
 	if err == nil {
-		gitExec(GIT["SetTemplateDir"] + templatedir)
+		gitExec("config", "--global", "init.templatedir", templatedir)
 	} else {
-		gitExec(GIT["RemoveTemplateDir"])
+		gitExec("config", "--global", "--remove-section", "init")
 	}
 }
 
 func TestUninstallGlobal(t *testing.T) {
 	// backup current configuration file
-	templatedir, err := gitExec(GIT["GetTemplateDir"])
+	templatedir, err := gitExec("config", "--global", "--get", "init.templatedir")
 
 	createDirectory(t, os.TempDir(), func(tempdir string) {
 		DIRS["HomeTemplate"] = filepath.Join(tempdir, "home")
 
 		installGlobal(tempdir)
-		newTemplatedir, err := gitExec(GIT["GetTemplateDir"])
+		newTemplatedir, err := gitExec("config", "--global", "--get", "init.templatedir")
 		assert.Nil(t, err)
 		assert.Equal(t, DIRS["HomeTemplate"], newTemplatedir)
 		assert.True(t, strings.HasPrefix(logger.infos[len(logger.infos)-2].(string), MESSAGES["SetTemplateDir"]))
 		logger.clear()
 
 		uninstallGlobal()
-		newTemplatedir, err = gitExec(GIT["GetTemplateDir"])
+		newTemplatedir, err = gitExec("config", "--global", "--get", "init.templatedir")
 		assert.NotNil(t, err)
 	})
 
 	// not installed
 	createDirectory(t, os.TempDir(), func(tempdir string) {
 		uninstallGlobal()
-		newTemplatedir, err := gitExec(GIT["GetTemplateDir"])
+		newTemplatedir, err := gitExec("config", "--global", "--get", "init.templatedir")
 		assert.NotNil(t, err)
 		assert.Equal(t, "", newTemplatedir)
 	})
 
 	// restore
 	if err == nil {
-		gitExec(GIT["SetTemplateDir"] + templatedir)
+		gitExec("config", "--global", "init.templatedir", templatedir)
 	} else {
-		gitExec(GIT["RemoveTemplateDir"])
+		gitExec("config", "--global", "--remove-section", "init")
 	}
 }
 

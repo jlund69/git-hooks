@@ -1,0 +1,4 @@
+## 2024-05-24 - OS Command Injection in gitExecWithDir
+**Vulnerability:** The `gitExecWithDir` function uses `strings.Split(strings.Join(args, " "), " ")` to parse the `args` argument slice before passing them to `exec.Command`. This could lead to a severe OS command injection vulnerability if arguments are not properly sanitized or if they contain space characters that could trick `exec.Command` into running unintended subcommands.
+**Learning:** Using `exec.Command` should always be done with distinct arguments passed directly into the variadic parameter `args...`, bypassing the need to concatenate and split by space, avoiding shell-style parsing mistakes.
+**Prevention:** Always pass arguments to `exec.Command` as separate, explicitly defined strings in slices or as discrete variadic arguments, never as strings that were split by spaces that could allow for argument poisoning.
