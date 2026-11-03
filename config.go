@@ -22,12 +22,12 @@ var DIRS = map[string]string{
 	"GlobalTemplate": "/usr/share/git-core/templates",
 }
 
-var GIT = map[string]string{
-	"SetTemplateDir":    "config --global init.templatedir ",
-	"GetTemplateDir":    "config --global --get init.templatedir",
-	"UnsetTemplateDir":  "config --global --unset init.templatedir",
-	"RemoveTemplateDir": "config --global --remove init",
-	"FirstCommit":       "rev-list --max-parents=0 HEAD",
+var GIT = map[string][]string{
+	"SetTemplateDir":    []string{"config", "--global", "init.templatedir"},
+	"GetTemplateDir":    []string{"config", "--global", "--get", "init.templatedir"},
+	"UnsetTemplateDir":  []string{"config", "--global", "--unset", "init.templatedir"},
+	"RemoveTemplateDir": []string{"config", "--global", "--remove", "init"},
+	"FirstCommit":       []string{"rev-list", "--max-parents=0", "HEAD"},
 }
 
 var MESSAGES = map[string]string{
