@@ -37,7 +37,7 @@ func hookDirs() map[string]string {
 	// global scope
 	// NOTE: git-hooks global hook actually configured via git --system
 	// configuration file
-	global, err := gitExec("config --get hooks.global")
+	global, err := gitExec("config", "--get", "hooks.global")
 	if err == nil {
 		path := global
 		isExist, _ := exists(path)
@@ -71,7 +71,7 @@ func hookConfigs() map[string]string {
 		}
 	}
 
-	global, err := gitExec("config --get hooks.globalconfig")
+	global, err := gitExec("config", "--get", "hooks.globalconfig")
 	if err == nil {
 		path := global
 		isExist, _ := exists(path)
@@ -145,7 +145,7 @@ func listHooksInDir(scope, dirname string) (hooks map[string][]string, err error
 
 			wrapper := make(map[string]interface{})
 			// repoid will be empty string if not in a git repo or don't have any commit yet
-			repoid, _ := gitExec(GIT["FirstCommit"])
+			repoid, _ := gitExec(GIT["FirstCommit"]...)
 
 			if scope == "user" {
 				wrapper[repoid] = hooks
@@ -193,7 +193,7 @@ func listHooksInConfig(config string) (hooks map[string]map[string][]string, err
 
 // Find contrib directory
 func getContribDir() (contrib string) {
-	contrib, err := gitExec("config --get hooks.contrib")
+	contrib, err := gitExec("config", "--get", "hooks.contrib")
 	isExist, _ := exists(contrib)
 	if err != nil || !isExist {
 		// default to use ~/.githooks-contrib
