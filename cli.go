@@ -88,11 +88,11 @@ func main() {
 func list() {
 	installed, err := isInstalled()
 	if err != nil {
-		logger.Infoln(MESSAGES["NotGitRepo"])
+		logger.Infoln("@y" + MESSAGES["NotGitRepo"])
 	} else if installed {
-		logger.Infoln(MESSAGES["Installed"])
+		logger.Infoln("@g" + MESSAGES["Installed"])
 	} else {
-		logger.Infoln(MESSAGES["NotInstalled"])
+		logger.Infoln("@y" + MESSAGES["NotInstalled"])
 	}
 
 	for scope, dir := range hookDirs() {
