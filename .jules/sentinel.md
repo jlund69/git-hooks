@@ -1,0 +1,4 @@
+## 2024-05-18 - Prevent Command Injection in Git Exec
+**Vulnerability:** Command injection vulnerability in `gitExecWithDir` function due to using `strings.Join` and `strings.Split` on arguments, effectively turning them into a single string evaluated by the shell (if `exec.Command` behaved like `system` or `sh -c`, or just misparsing spaces in arguments, leading to argument injection).
+**Learning:** `gitExecWithDir` joined and re-split arguments (`args = strings.Split(strings.Join(args, " "), " ")`), which negates the safety of passing multiple separate strings to `exec.Command`. It allows spaces inside arguments to be treated as separators, causing argument injection or command injection.
+**Prevention:** Remove the join/split logic and pass the variadic arguments (`args ...string`) directly to `exec.Command`. Update all usages of `gitExec` to pass arguments as separate strings (or slices) instead of space-separated strings.
