@@ -1,0 +1,3 @@
+## 2024-11-06 - CLI Colorization for Status Messages
+**Learning:** Adding standard string tags like `@y` or `@g` properly colorizes the CLI output for the end-user by taking advantage of the `github.com/wsxiaoys/terminal/color` package. However, in test environments, the test logger stores the original unparsed string arguments, meaning test assertions against logger output need to exactly match the formatted string tags.
+**Action:** Always append color tags directly to strings inside specific message functions instead of modifying the global config slices. Update the tests to expect those same tags.
