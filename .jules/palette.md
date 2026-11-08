@@ -1,0 +1,3 @@
+## 2024-05-19 - Adding Colors to Improve CLI Visual Hierarchy
+**Learning:** Terminal text density can overwhelm users, especially when outputs contain multiple sections or nested elements (like repo > hook > action). The absence of visual differentiation makes scanning the output slow and prone to oversight. Relying solely on indentation isn't always enough to establish a clear hierarchy.
+**Action:** Used `github.com/wsxiaoys/terminal/color` native color tag parsing to add specific colors (`@y` for warnings/statuses, `@g` for success, `@c` for section headers, `@m` for triggers) to text messages. This creates an immediate visual hierarchy that improves readability and scannability, guiding the user's eye naturally through the information.
