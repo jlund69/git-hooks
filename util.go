@@ -12,15 +12,14 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
-	"strings"
 )
 
 func getGitRepoRoot() (string, error) {
-	return gitExec("rev-parse --show-toplevel")
+	return gitExec("rev-parse", "--show-toplevel")
 }
 
 func getGitDirPath() (string, error) {
-	return gitExec("rev-parse --git-dir")
+	return gitExec("rev-parse", "--git-dir")
 }
 
 func gitExec(args ...string) (string, error) {
@@ -33,8 +32,8 @@ func gitExec(args ...string) (string, error) {
 }
 
 func gitExecWithDir(dir string, args ...string) (string, error) {
-	args = strings.Split(strings.Join(args, " "), " ")
-
+	// SECURITY: Pass arguments directly to exec.Command instead of joining and space-splitting.
+	// This prevents argument/command injection vulnerabilities if arguments contain intended spaces.
 	cmd := exec.Command("git", args...)
 	cmd.Dir = dir
 

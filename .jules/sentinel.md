@@ -1,0 +1,4 @@
+## 2024-05-15 - [Critical] Command/Argument Injection via Space-Split Arguments
+**Vulnerability:** The application was passing commands to `exec.Command` by taking variadic string arguments, joining them with spaces, and then splitting them by space (`args = strings.Split(strings.Join(args, " "), " ")`).
+**Learning:** This approach causes arguments containing intended spaces (e.g., file paths, user input) to be improperly split into multiple arguments, which can lead to command/argument injection vulnerabilities and unexpected execution behavior.
+**Prevention:** Define commands and arguments as string slices (`[]string`) from the start, and pass them directly to `exec.Command` using the spread operator (`...`). When combining arguments dynamically, use `append` appropriately (e.g., `append([]string(nil), baseCmd...)`) to avoid mutating global configuration slices.
